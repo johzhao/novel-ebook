@@ -91,3 +91,9 @@ ITEM_PIPELINES = {
 
 mongo_db_host = 'localhost'
 mongo_db_port = 27017
+
+novel_ids = [
+    '1010804407',
+]
+
+novel_host = 'qidian'

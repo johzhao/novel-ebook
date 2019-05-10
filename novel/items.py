@@ -8,8 +8,17 @@
 import scrapy
 
 
+class NovelSummaryItem(scrapy.Item):
+    nid = scrapy.Field()
+    index = scrapy.Field()
+    name = scrapy.Field()
+    author = scrapy.Field()
+    description = scrapy.Field()
+    tags = scrapy.Field()
+
+
 class NovelItem(scrapy.Item):
-    host = scrapy.Field()
+    nid = scrapy.Field()
     index = scrapy.Field()
     title = scrapy.Field()
     content = scrapy.Field()

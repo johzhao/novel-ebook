@@ -8,7 +8,7 @@ import logging
 
 import pymongo
 
-from novel.settings import mongo_db_host, mongo_db_port
+from novel.settings import mongo_db_host, mongo_db_port, novel_host
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -19,11 +19,8 @@ class NovelPipeline(object):
     def __init__(self):
         self.client = pymongo.MongoClient(mongo_db_host, mongo_db_port)
         self.database = self.client['novel']
+        self.collection = self.database[novel_host]
 
     def process_item(self, item, _):
-        data = dict(item)
-        collection_name = data.get('host', 'unknown')
-        data.pop('host', None)
-        collection = self.database[collection_name]
-        collection.insert(data)
+        self.collection.insert(dict(item))
         return item
