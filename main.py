@@ -1,5 +1,6 @@
 import pymongo
 from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
 
 from epub.epub_creator import EPubCreator
 from novel.settings import novel_host, novel_ids, mongo_db_host, mongo_db_port
@@ -8,7 +9,7 @@ from novel.utility import timethis
 
 
 def crawl_novels():
-    process = CrawlerProcess()
+    process = CrawlerProcess(get_project_settings())
     process.crawl(QidianSpider)
     process.start()
 
@@ -20,7 +21,7 @@ def make_epubs():
 
     for novel_id in novel_ids:
         creator = EPubCreator('./output')
-        chapters = my_set.find({'nid': novel_id}).sort('index').limit(5)
+        chapters = my_set.find({'nid': novel_id}).sort('index')
         summary = chapters[0]
         creator.start_book(summary['name'], summary['author'], summary['description'], summary['tags'])
         for chapter in chapters[1:]:
