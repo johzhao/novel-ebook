@@ -1,6 +1,7 @@
 import logging
 import os
 import shutil
+import uuid
 import zipfile
 
 from epub.ncx_maker import NcxMaker
@@ -20,7 +21,7 @@ class EPubCreator:
         self.opf_maker = OpfMaker()
         self.chapter_index = 0
 
-    def start_book(self, name: str, author: str = '', description: str = '', _=None):
+    def start_book(self, name: str, author: str = '', publisher: str = '', description: str = '', tags: list = None):
         self.novel_name = name
         self.path = os.path.join(self.work_folder, name)
         if os.path.exists(self.path):
@@ -30,10 +31,13 @@ class EPubCreator:
         self._create_mimetype_file()
         self._create_container_xml()
 
+        uuid_ = str(uuid.uuid4())
+
         self.path = os.path.join(self.path, 'OPS')
         os.makedirs(self.path, exist_ok=True)
-        self.ncx_maker.start_with_folder(self.path, name)
-        meta = self._create_meta(name, author, description)
+        self.ncx_maker.start_with_folder(self.path, uuid_, name)
+
+        meta = self._create_meta(uuid_, name, author, publisher, description, tags)
         self.opf_maker.start_with_folder(self.path, **meta)
 
         self.chapter_index = 1
@@ -102,14 +106,18 @@ class EPubCreator:
             ofile.write(data)
 
     @staticmethod
-    def _create_meta(name: str, author: str, description: str) -> dict:
+    def _create_meta(uuid_: str, name: str, author: str, publisher: str, description: str, tags: list) -> dict:
         meta = {}
+        if uuid_:
+            meta['identifier'] = uuid_
         if name:
             meta['title'] = name
         if author:
             meta['creator'] = author
+        if publisher:
+            meta['publisher'] = publisher
         if description:
             meta['description'] = description
-        meta['identifier'] = 'unknown'
-        meta['language'] = 'zh'
+        meta['language'] = 'zh-CN'
+        meta['subject'] = tags if tags else []
         return meta

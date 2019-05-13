@@ -11,7 +11,7 @@ class OpfMaker:
         self.file = open(os.path.join(path, 'content.opf'), 'w')
         data = (
             '<?xml version="1.0"  encoding="UTF-8"?>\n'
-            '<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="unknown" version="2.0">\n'
+            '<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">\n'
             '    <metadata xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata"'
             ' xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"'
             ' xmlns:opf="http://www.idpf.org/2007/opf" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n'
@@ -19,8 +19,12 @@ class OpfMaker:
         self.file.write(data)
 
         for key, value in kwargs.items():
-            if key == 'identifier':
-                data = f'        <dc:{key} id="unknown">{value}</dc:{key}>\n'
+            if key == 'subject':
+                data = ''
+                for item in value:
+                    data = data + f'        <dc:{key}>{item}</dc:{key}>\n'
+            elif key == 'identifier':
+                data = f'<dc:identifier opf:scheme="uuid" id="uuid_id">{value}</dc:identifier>'
             else:
                 data = f'        <dc:{key}>{value}</dc:{key}>\n'
             self.file.write(data)

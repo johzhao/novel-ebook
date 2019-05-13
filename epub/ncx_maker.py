@@ -7,12 +7,12 @@ class NcxMaker:
         self.file = None
         self.nav_index = 0
 
-    def start_with_folder(self, path: str, title: str):
+    def start_with_folder(self, path: str, uuid: str, title: str):
         self.file = open(os.path.join(path, 'content.ncx'), 'w')
         data = ('<?xml version="1.0"?>\n'
                 '<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">\n'
                 '    <head>\n'
-                '        <meta name="dtb:uid" content="unknown" />\n'
+                f'        <meta name="dtb:uid" content="{uuid}" />\n'
                 '        <meta name="dtb:depth" content="2" />\n'
                 '        <meta name="dtb:totalPageCount" content="0" />\n'
                 '        <meta name="dtb:maxPageNumber" content="0" />\n'

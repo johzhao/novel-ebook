@@ -23,7 +23,7 @@ def make_epubs():
         creator = EPubCreator('./output')
         chapters = my_set.find({'nid': novel_id}).sort('index')
         summary = chapters[0]
-        creator.start_book(summary['name'], summary['author'], summary['description'], summary['tags'])
+        creator.start_book(summary['name'], summary['author'], '起点', summary['description'], summary['tags'])
         for chapter in chapters[1:]:
             creator.append_chapter(chapter['title'], chapter['content'])
         creator.finish_book()
