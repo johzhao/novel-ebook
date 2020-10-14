@@ -121,3 +121,18 @@ class EPubCreator:
         meta['language'] = 'zh-CN'
         meta['subject'] = tags if tags else []
         return meta
+
+
+# def test_make_epubs():
+#     client = pymongo.MongoClient(host=mongo_db_host, port=mongo_db_port)
+#     db = client['novel']
+#     my_set = db[novel_host]
+#
+#     for novel_id in novel_ids:
+#         creator = EPubCreator('./output')
+#         chapters = my_set.find({'nid': novel_id}).sort('index')
+#         summary = chapters[0]
+#         creator.start_book(summary['name'], summary['author'], '起点', summary['description'], summary['tags'])
+#         for chapter in chapters[1:]:
+#             creator.append_chapter(chapter['title'], chapter['content'])
+#         creator.finish_book()
