@@ -30,7 +30,7 @@ class TaskQueue:
         with self._redis:
             self._redis.lpush(self.FAILED_TASK_KEY, request.serialize())
 
-    def get_pending_task(self) -> Optional[Request]:
+    def pop_pending_task(self) -> Optional[Request]:
         with self._redis:
             data = self._redis.lpop(self.PENDING_TASK_KEY)
             if data:

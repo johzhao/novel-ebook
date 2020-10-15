@@ -1,10 +1,13 @@
 import logging
 
+from .request import Request
+
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
 class Response:
 
-    def __init__(self):
-        pass
+    def __init__(self, request: Request, content: str):
+        self._request = request
+        self.content = content
