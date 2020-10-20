@@ -10,6 +10,7 @@ class Request:
     def __init__(self):
         self.url = ''
         self.headers = {}
+        self.metadata = {}
 
     def serialize(self) -> str:
         obj = vars(self)
