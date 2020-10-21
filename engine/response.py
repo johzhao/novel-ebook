@@ -9,5 +9,5 @@ logger.addHandler(logging.NullHandler())
 class Response:
 
     def __init__(self, request: Request, content: str):
-        self._request = request
+        self.request = request
         self.content = content
