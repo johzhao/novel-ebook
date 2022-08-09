@@ -26,9 +26,9 @@ class ExportEPubPipeline:
         self.client = None  # type: Optional[pymongo.MongoClient]
         self.db = None  # type: Optional[pymongo.database.Database]
         self.books = {
-            'dizishu': [
-                '10601',
-            ]
+            # 'dizishu': [
+            #     '10601',
+            # ]
         }
 
     # noinspection PyUnusedLocal

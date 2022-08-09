@@ -12,9 +12,10 @@ class DiZiShuSpider(scrapy.Spider):
     allowed_domains = ['www.dizishu.com']
     start_urls = []
     book_ids = [
-        # '17709',
+        '17709',
     ]
     pattern = re.compile(r"cctxt=cctxt.replace\(/(.+)?/g,'(.+)?'\);")
+    table_pattern = re.compile(r'<table.*</table>')
 
     def start_requests(self):
         for book_id in self.book_ids:
@@ -46,6 +47,8 @@ class DiZiShuSpider(scrapy.Spider):
         contents = response.css('::text').getall()
         replaces = {
             'var cctxt=\'': '',
+            '<content>': '',
+            '</content>': '',
         }
         data = contents[-1]
         for match in self.pattern.findall(data):
@@ -61,7 +64,12 @@ class DiZiShuSpider(scrapy.Spider):
                 i = paragraph.rfind('\';\r\ncctxt=cctxt')
                 paragraph = paragraph[:i]
 
-            paragraphs.append(paragraph.strip())
+            paragraph = self.table_pattern.sub('', paragraph)
+
+            paragraph = paragraph.strip()
+
+            if paragraph:
+                paragraphs.append(paragraph)
 
         yield ebook_maker.items.EbookChapterItem(source=self.name, book_id=book_id, chapter_id=int(chapter_id),
                                                  title=chapter_title, paragraphs=paragraphs)
